@@ -12,6 +12,7 @@ const googleClient = new OAuth2Client({
 
 
 const adminAuth = async (requestData, res) => {
+  
     const user = await Admin.findOne({ username: requestData.username });
 
     if (!user) {
@@ -28,7 +29,7 @@ const adminAuth = async (requestData, res) => {
     } 
 
     const { pass, ...others } = user._doc;
-    res.status(200).json(...others)
+    res.status(200).json({...others})
 
     // const accessToken = jwt.sign(
     //     user.toJSON(),
