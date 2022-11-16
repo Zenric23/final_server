@@ -22,6 +22,8 @@ const emailSenderRoutes = require('./Routes/emailSender');
 const landingPageRoutes = require('./Routes/landingPage')
 const notificationRoutes = require('./Routes/notif')
 const formData = require('express-form-data');
+const settingRoutes = require('./Routes/setting')
+
 
 // mongoose.connect('mongodb://localhost:27017/King_Canis', {useNewUrlParser: true, useUnifiedTopology: true})
 //     .then(()=> console.log("connected to database!"))
@@ -53,6 +55,8 @@ app.use('/report', reportRoutes)
 app.use('/mail', emailSenderRoutes)
 app.use('/landing', landingPageRoutes)
 app.use('/notif', notificationRoutes)
+app.use('/setting', settingRoutes)
+
 
 app.listen(process.env.PORT || 5000, ()=> { 
     console.log("server is running to port 5000") 
