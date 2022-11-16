@@ -33,10 +33,11 @@ mongoose.connect(process.env.MONGODB_URL)
 .then(()=> console.log("connected to database!"))
 .catch((err)=> console.log(err))
 
-app.use(cors({
-    credentials: true, 
-    origin: ['https://admin.kingcanis.com', 'https://kingcanis.com']
-}))
+// app.use(cors({
+//     credentials: true, 
+//     origin: ['https://admin.kingcanis.com', 'https://kingcanis.com']
+// }))
+
 app.use(express.json()) 
 app.use(express.urlencoded({ extended: true })); 
 app.use(cookieParser())  
