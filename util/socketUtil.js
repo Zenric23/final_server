@@ -1,6 +1,6 @@
-const io = require("socket.io")(8000, {
+const io = require("socket.io")(process.env.SOCKET_PORT || 8000, {
     cors: {
-        origin: ['http://localhost:3000', 'http://localhost:3001']
+        origin: ['https://kingcanis.com', 'https://dashboard.kingcanis.com']
     }
   });
   
