@@ -38,6 +38,8 @@ mongoose.connect(process.env.MONGODB_URL)
 //     origin: ['https://admin.kingcanis.com', 'https://kingcanis.com']
 // }))
 
+app.use(cors())
+
 app.use(express.json()) 
 app.use(express.urlencoded({ extended: true })); 
 app.use(cookieParser())  
