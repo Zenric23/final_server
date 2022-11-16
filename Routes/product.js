@@ -320,6 +320,12 @@ const generateProdPrice = async (product_id) => {
   const maxPrice = Math.max(...price)
   const minPrice = Math.min(...price)
 
+  if(price.length  === 1) {
+    await Product.findByIdAndUpdate(product_id, {
+      price: `${maxPrice}`
+    })  
+    return
+  }
   await Product.findByIdAndUpdate(product_id, {
     price: `${minPrice} ~ ${maxPrice}`
   })
