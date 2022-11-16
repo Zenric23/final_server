@@ -21,7 +21,7 @@ const adminAuth = async (requestData, res) => {
 
     const validatePass = 
       await bcrypt.compare(requestData.pass, user.pass);
-    res.status(200).json(validatePass)
+    res.status(200).json(user)
     return
     if (!validatePass) {
       res.status(401).json("Wrong password!");
