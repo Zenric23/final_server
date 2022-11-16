@@ -164,7 +164,10 @@ router.post("/upload-image-product", async (req, res) => {
 router.get('/related-products/:id', async (req,res)=> {
   try {
     const product = await Product.findById(req.params.id)
-    const products = await Product.find({animalTags: { $in: [...product.animalTags] }}).limit(4)
+    const products = await Product.find({$and:[
+      {animalTags: { $in: [...product.animalTags] }},
+      {_id: { $ne: req.params.id }}
+    ]}).limit(4)
     res.status(200).json(products)
   } catch (error) {
     res.status(500).json(error)
