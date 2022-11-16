@@ -1,7 +1,6 @@
 const router = require("express").Router();
 const Order = require("../Model/Order");
 const Product = require("../Model/Product");
-const { verifyTokenAndAdmin } = require("./verifyToken");
 const cloudinary = require('../util/cloudinaryUtil');
 
 
@@ -113,7 +112,7 @@ router.get('/search', async (req, res)=> {
   }
 })
 
-router.post('/', verifyTokenAndAdmin, async (req, res)=> {
+router.post('/', async (req, res)=> {
   try {
     const productData = new Product(req.body)
     await productData.save()
