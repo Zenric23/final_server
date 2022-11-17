@@ -12,7 +12,7 @@ const totalPayment = (items, otherFees) => {
   items.forEach(prod=> {
     total += (prod.quantity * prod.price)
   })
-  return total + otherFees[0].value + otherFees[1].value
+  return total + otherFees[0].value
 }
 
 
