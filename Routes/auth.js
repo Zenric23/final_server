@@ -11,6 +11,31 @@ const googleClient = new OAuth2Client({
 });
 
 
+
+const clientAuth = async (requestData, res) => {
+  
+  const user = await Customer.findOne({ email: requestData.email });
+  res.status(200).json('dasdsa')
+  return
+  
+  if (!user) {
+    res.status(401).json("The Email does not exist!");
+    return;
+  }
+
+  const validatePass = 
+    await bcrypt.compare(requestData.pass, user.pass);
+
+  if (!validatePass) {
+    res.status(401).json("Wrong password!");
+    return;
+  } 
+
+  const { pass, ...others } = user._doc;
+  res.status(200).json({...others})
+}
+
+
 const adminAuth = async (requestData, res) => {
   
     const user = await Admin.findOne({ username: requestData.username });
@@ -121,6 +146,12 @@ router.post("/", async (req, res) => {
         await adminAuth(req.body, res)
         return
     }
+    
+    if(req.query.client) {
+      await clientAuth(req.body, res)
+      return
+    }
+
     await googleAuth(req.body, res)
   } catch (error) {
     console.log(error);
@@ -131,11 +162,31 @@ router.post("/", async (req, res) => {
 
 // REGISTER
 router.post("/register", async (req, res) => {
-  const { pass, username } = req.body;
+  const { pass, username, email } = req.body;
 
   try {
     const salt = await bcrypt.genSalt(10);
     const hashedPass = await bcrypt.hash(pass, salt);
+
+    if(req.query.client) {
+      const custUser = await Customer.findOne({email}) 
+
+    if(custUser) {
+        res.status(403).json('The email is already taken!')
+        return
+    } 
+
+    const customer = new Customer({
+      username,
+      pass: hashedPass,
+      email
+    });
+
+    customer.save();
+
+    res.status(200).json(customer);
+    return
+  }
 
     const adminUser = await Admin.findOne({username}) 
 
