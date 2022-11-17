@@ -6,6 +6,7 @@ const {verifyTokenAndAuthorization } = require('./verifyToken')
 // ADD PRODUCT TO CART
 router.put('/add/:id', async (req, res)=> {
     // { product_id, price, qty, size }
+    
     try {
         const cartData = await Cart.findOne({customer_id: req.params.id})
         const addedProduct = await cartData.addProduct(req.body)
@@ -21,7 +22,7 @@ router.put('/update/:id', async (req, res)=> {
     const { action } = req.query
     let updatedCart = {} 
  
-    try {
+    try { 
         const cartData = await Cart.findOne({customer_id: req.params.id})
 
         if(action === 'delete') {

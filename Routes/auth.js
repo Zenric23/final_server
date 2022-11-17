@@ -17,7 +17,7 @@ const clientAuth = async (requestData, res) => {
   const user = await Customer.findOne({ email: requestData.email });
   
   if (!user) {
-    res.status(401).json("The Email does not exist!");
+    res.status(401).json("The user does not exist!");
     return;
   }
 
@@ -181,6 +181,9 @@ router.post("/register", async (req, res) => {
     });
 
     customer.save();
+
+    const cart = new Cart({ customer_id: customer._id });
+    await cart.save();
 
     res.status(200).json(customer);
     return
