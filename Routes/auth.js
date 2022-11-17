@@ -15,8 +15,6 @@ const googleClient = new OAuth2Client({
 const clientAuth = async (requestData, res) => {
   
   const user = await Customer.findOne({ email: requestData.email });
-  res.status(200).json('dasdsa')
-  return
   
   if (!user) {
     res.status(401).json("The Email does not exist!");
