@@ -18,7 +18,7 @@ class InvoiceController {
         const options = {
             method: 'POST',
             headers: this.headers,
-            timeout: this.timeout,
+            // timeout: this.timeout,
             auth: this.auth,
             url: this.url,
             data
