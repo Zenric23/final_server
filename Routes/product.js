@@ -57,15 +57,6 @@ router.get("/best-seller", async (req, res) => {
         },
       ]);
   
-      await Product.populate(bestSellers, {
-        path: "products",
-        select: {
-          title: 1,
-          price: 1,
-          images: 1,
-        },
-      });
-
     } else {
 
       bestSellers = await Order.aggregate([
@@ -125,7 +116,7 @@ router.get("/best-seller", async (req, res) => {
     });
 
     res.status(200).json(bestSellers);
-    
+
   } catch (error) {
     console.log(error);
     res.status(500).json(error);
