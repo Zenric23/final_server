@@ -5,72 +5,61 @@ const cloudinary = require('../util/cloudinaryUtil');
 
 
 router.get("/best-seller", async (req, res) => {
-  
+  let bestSellers
+
   try {
 
-    // if(req.query.admin) {
+    if(req.query.admin) {
 
-    //   const bestSellers = await Order.aggregate([
-    //     {
-    //       $match: {
-    //         payment_status: "PAID",
-    //         payment_status: {
-    //           $ne: 'Cancelled'
-    //         },
-    //         isDelivered: true
-    //       }
-    //     },
-    //     {
-    //       $unwind: {
-    //         path: "$products",
-    //       },
-    //     },
-    //     {
-    //       $group: {
-    //         _id: "$products.product_id",
-    //         sum: {
-    //           $sum: "$products.qty",
-    //         },
-    //       },
-    //     },
-    //     { 
-    //       $sort: {
-    //         sum: -1,
-    //       },
-    //     },
-    //     {
-    //       $limit: 5,
-    //     },
-    //     {
-    //       $group: {
-    //         _id: "null",
-    //         products: {
-    //           $push: "$_id",
-    //         },
-    //       },
-    //     },
-    //     {
-    //       $project: {
-    //         _id: 0,
-    //       },
-    //     },
-    //   ]);
-
-    //   await Product.populate(bestSellers, {
-    //     path: "products",
-    //     select: {
-    //       title: 1,
-    //       price: 1,
-    //       images: 1,
-    //     },
-    //   });
+      bestSellers = await Order.aggregate([
+        {
+          $match: {
+            payment_status: "PAID",
+            payment_status: {
+              $ne: 'Cancelled'
+            },
+            isDelivered: true
+          }
+        },
+        {
+          $unwind: {
+            path: "$products",
+          },
+        },
+        {
+          $group: {
+            _id: "$products.product_id",
+            sum: {
+              $sum: "$products.qty",
+            },
+          },
+        },
+        { 
+          $sort: {
+            sum: -1,
+          },
+        },
+        {
+          $limit: 5,
+        },
+        {
+          $group: {
+            _id: "null",
+            products: {
+              $push: "$_id",
+            },
+          },
+        },
+        {
+          $project: {
+            _id: 0,
+          },
+        },
+      ]);
   
-    //   res.status(200).json(bestSellers);
+    } else {
 
-    //   return
-    // } 
-
-      const bestSellers = await Order.aggregate([
+      bestSellers = await Order.aggregate([
         {
           $match: {
             payment_status: "PAID",
@@ -115,7 +104,7 @@ router.get("/best-seller", async (req, res) => {
           },
         },
       ]);
-    
+    }
 
     await Product.populate(bestSellers, {
       path: "products",
