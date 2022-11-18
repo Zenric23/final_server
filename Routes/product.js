@@ -65,6 +65,7 @@ router.get("/best-seller", async (req, res) => {
           images: 1,
         },
       });
+      
     } else {
 
       bestSellers = await Order.aggregate([
