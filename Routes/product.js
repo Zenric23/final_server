@@ -8,67 +8,67 @@ router.get("/best-seller", async (req, res) => {
   
   try {
 
-    if(req.query.admin) {
+    // if(req.query.admin) {
 
-      const bestSellers = await Order.aggregate([
-        {
-          $match: {
-            payment_status: "PAID",
-            payment_status: {
-              $ne: 'Cancelled'
-            },
-            isDelivered: true
-          }
-        },
-        {
-          $unwind: {
-            path: "$products",
-          },
-        },
-        {
-          $group: {
-            _id: "$products.product_id",
-            sum: {
-              $sum: "$products.qty",
-            },
-          },
-        },
-        { 
-          $sort: {
-            sum: -1,
-          },
-        },
-        {
-          $limit: 5,
-        },
-        {
-          $group: {
-            _id: "null",
-            products: {
-              $push: "$_id",
-            },
-          },
-        },
-        {
-          $project: {
-            _id: 0,
-          },
-        },
-      ]);
+    //   const bestSellers = await Order.aggregate([
+    //     {
+    //       $match: {
+    //         payment_status: "PAID",
+    //         payment_status: {
+    //           $ne: 'Cancelled'
+    //         },
+    //         isDelivered: true
+    //       }
+    //     },
+    //     {
+    //       $unwind: {
+    //         path: "$products",
+    //       },
+    //     },
+    //     {
+    //       $group: {
+    //         _id: "$products.product_id",
+    //         sum: {
+    //           $sum: "$products.qty",
+    //         },
+    //       },
+    //     },
+    //     { 
+    //       $sort: {
+    //         sum: -1,
+    //       },
+    //     },
+    //     {
+    //       $limit: 5,
+    //     },
+    //     {
+    //       $group: {
+    //         _id: "null",
+    //         products: {
+    //           $push: "$_id",
+    //         },
+    //       },
+    //     },
+    //     {
+    //       $project: {
+    //         _id: 0,
+    //       },
+    //     },
+    //   ]);
 
-      await Product.populate(bestSellers, {
-        path: "products",
-        select: {
-          title: 1,
-          price: 1,
-          images: 1,
-        },
-      });
+    //   await Product.populate(bestSellers, {
+    //     path: "products",
+    //     select: {
+    //       title: 1,
+    //       price: 1,
+    //       images: 1,
+    //     },
+    //   });
   
-      res.status(200).json(bestSellers);
+    //   res.status(200).json(bestSellers);
 
-      return
-    } 
+    //   return
+    // } 
 
       const bestSellers = await Order.aggregate([
         {
