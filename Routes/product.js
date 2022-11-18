@@ -5,13 +5,12 @@ const cloudinary = require('../util/cloudinaryUtil');
 
 
 router.get("/best-seller", async (req, res) => {
-  let bestSellers
-
+  
   try {
 
     if(req.query.admin) {
 
-      bestSellers = await Order.aggregate([
+      const bestSellers = await Order.aggregate([
         {
           $match: {
             payment_status: "PAID",
@@ -56,10 +55,22 @@ router.get("/best-seller", async (req, res) => {
           },
         },
       ]);
-  
-    } else {
 
-      bestSellers = await Order.aggregate([
+      await Product.populate(bestSellers, {
+        path: "products",
+        select: {
+          title: 1,
+          price: 1,
+          images: 1,
+        },
+      });
+  
+      res.status(200).json(bestSellers);
+
+      return
+    } 
+
+      const bestSellers = await Order.aggregate([
         {
           $match: {
             payment_status: "PAID",
@@ -104,7 +115,7 @@ router.get("/best-seller", async (req, res) => {
           },
         },
       ]);
-    }
+    
 
     await Product.populate(bestSellers, {
       path: "products",
