@@ -65,7 +65,7 @@ router.get("/best-seller", async (req, res) => {
           images: 1,
         },
       });
-      
+
     } else {
 
       bestSellers = await Order.aggregate([
@@ -125,6 +125,7 @@ router.get("/best-seller", async (req, res) => {
     });
 
     res.status(200).json(bestSellers);
+    
   } catch (error) {
     console.log(error);
     res.status(500).json(error);
