@@ -9,7 +9,7 @@ router.get("/best-seller", async (req, res) => {
 
   try {
 
-    if(rqe.query.admin) {
+    if(req.query.admin) {
 
       bestSellers = await Order.aggregate([
         {
