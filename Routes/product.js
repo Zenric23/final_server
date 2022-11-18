@@ -5,52 +5,114 @@ const cloudinary = require('../util/cloudinaryUtil');
 
 
 router.get("/best-seller", async (req, res) => {
+  let bestSellers
+
   try {
-    const bestSellers = await Order.aggregate([
-      {
-        $match: {
-          payment_status: "PAID",
-          payment_status: {
-            $ne: 'Cancelled'
-          },
-          isDelivered: true
-        }
-      },
-      {
-        $unwind: {
-          path: "$products",
+
+    if(rqe.query.admin) {
+
+      bestSellers = await Order.aggregate([
+        {
+          $match: {
+            payment_status: "PAID",
+            payment_status: {
+              $ne: 'Cancelled'
+            },
+            isDelivered: true
+          }
         },
-      },
-      {
-        $group: {
-          _id: "$products.product_id",
-          sum: {
-            $sum: "$products.qty",
+        {
+          $unwind: {
+            path: "$products",
           },
         },
-      },
-      { 
-        $sort: {
-          sum: -1,
-        },
-      },
-      {
-        $limit: 8,
-      },
-      {
-        $group: {
-          _id: "null",
-          products: {
-            $push: "$_id",
+        {
+          $group: {
+            _id: "$products.product_id",
+            sum: {
+              $sum: "$products.qty",
+            },
           },
         },
-      },
-      {
-        $project: {
-          _id: 0,
+        { 
+          $sort: {
+            sum: -1,
+          },
         },
-      },
-    ]);
+        {
+          $limit: 5,
+        },
+        {
+          $group: {
+            _id: "null",
+            products: {
+              $push: "$_id",
+            },
+          },
+        },
+        {
+          $project: {
+            _id: 0,
+          },
+        },
+      ]);
+  
+      await Product.populate(bestSellers, {
+        path: "products",
+        select: {
+          title: 1,
+          price: 1,
+          images: 1,
+        },
+      });
+    } else {
+
+      bestSellers = await Order.aggregate([
+        {
+          $match: {
+            payment_status: "PAID",
+            payment_status: {
+              $ne: 'Cancelled'
+            },
+            isDelivered: true
+          }
+        },
+        {
+          $unwind: {
+            path: "$products",
+          },
+        },
+        {
+          $group: {
+            _id: "$products.product_id",
+            sum: {
+              $sum: "$products.qty",
+            },
+          },
+        },
+        { 
+          $sort: {
+            sum: -1,
+          },
+        },
+        {
+          $limit: 8,
+        },
+        {
+          $group: {
+            _id: "null",
+            products: {
+              $push: "$_id",
+            },
+          },
+        },
+        {
+          $project: {
+            _id: 0,
+          },
+        },
+      ]);
+    }
 
     await Product.populate(bestSellers, {
       path: "products",
