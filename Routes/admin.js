@@ -12,9 +12,9 @@ router.post('/', async (req, res)=> {
     }
 })
 
-router.get('/', async (req, res) => {
+router.get('/:id', async (req, res) => {
     try{
-        const Admin = await Admin.find()
+        const Admin = await Admin.findById()
         res.status(200).json(Admin)
     } catch (error) {
         res.status(200).json(error) 
