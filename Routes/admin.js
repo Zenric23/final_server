@@ -14,8 +14,8 @@ router.post('/', async (req, res)=> {
 
 router.get('/:id', async (req, res) => {
     try{
-        const Admin = await Admin.findById(req.params.id)
-        res.status(200).json(Admin)
+        const admin = await Admin.findById(req.params.id)
+        res.status(200).json(admin)
     } catch (error) {
         res.status(200).json(error) 
     }
