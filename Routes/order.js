@@ -90,7 +90,7 @@ router.get('/:id', async (req, res)=> {
     try {
         const order = await Order
             .findById(req.params.id)
-            .populate("products.product_id", {title: 1, images: 1})
+            .populate("products.product_id", {title: 1, images: 1, sizes: 1})
 
         res.status(200).json(order)
     } catch (error) {

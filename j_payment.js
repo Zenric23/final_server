@@ -37,7 +37,8 @@ router.post('/', async (req, res) => {
       phoneNumber: req.body.phoneNumber,
       shipping: req.body.shipping,
       products: req.body.products,
-      customer_id: req.body.customer_id || ''
+      customer_id: req.body.customer_id || '',
+      payment_method: req.body.payment_method
     })
     await newOrder.save()
 
