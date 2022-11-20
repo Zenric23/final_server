@@ -241,6 +241,15 @@ router.get("/", async (req, res) => {
   try {
 
     if(req.query.client) {
+      
+       if(req.query.q) {
+      products = await Product.find({title: new RegExp(req.query.q, "i")})
+
+      totalProducts = products.length
+
+      res.status(200).json({products, totalProducts})
+      return
+    }
 
       if(req.query.cat) {
         products = await Product
