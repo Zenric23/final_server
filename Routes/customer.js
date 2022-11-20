@@ -25,13 +25,28 @@ router.get('/:id', async (req, res)=> {
 router.get('/', async (req, res) => {
     const page = req.query.p || 0
     const userPerPage = 10
+    let customers;
+    let totalUsers;
+
     try{
-        const customers = await Customer
+        if(req.query.q) {
+            customers = await Customer
+            .find({email: req.query.q})
+            .skip(page * userPerPage)
+            .limit(userPerPage)
+
+            totalUsers = customers.length
+
+            res.status(200).json({customers, totalUsers})
+            return
+        }
+
+        customers = await Customer
             .find()
             .skip(page * userPerPage)
             .limit(userPerPage)
 
-        const totalUsers = await Customer.countDocuments() 
+        totalUsers = await Customer.countDocuments() 
 
         res.status(200).json({customers, totalUsers})
     } catch (error) {
