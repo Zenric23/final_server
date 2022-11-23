@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const Admin = require('../Model/Admin')
-
+const bcrypt = require('bcrypt')
 
 router.post('/', async (req, res)=> {
     try {
@@ -26,8 +26,13 @@ router.put('/:id', async (req, res) => {
     const { id } = req.params
 
     try {
+        const salt = await bcrypt.genSalt(10)
+        const hashedPass = await bcrypt.hash(req.body.pass, salt)
         const updatedAdmin = await Admin.findByIdAndUpdate(id, {
-            $set: req.body
+            $set: {
+                ...req.body,
+                pass: hashedPass
+            }
         }, { new: true })
         res.status(200).json(updatedAdmin)
     } catch (error) {
