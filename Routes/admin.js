@@ -28,6 +28,7 @@ router.put('/:id', async (req, res) => {
     try {
         const salt = await bcrypt.genSalt(10)
         const hashedPass = await bcrypt.hash(req.body.pass, salt)
+        
         const updatedAdmin = await Admin.findByIdAndUpdate(id, {
             $set: {
                 ...req.body,
