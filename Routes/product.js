@@ -245,7 +245,7 @@ router.get("/", async (req, res) => {
        if(req.query.q) {
       products = await Product.find({title: new RegExp(req.query.q, "i")})
 
-      totalProducts = products.length
+      totalProducts = getTotalProducts(Product, page, 32, {title: new RegExp(req.query.q, "i")})
 
       res.status(200).json({products, totalProducts})
       return
@@ -256,14 +256,19 @@ router.get("/", async (req, res) => {
           .find({"category": req.query.cat})
           .skip(page * 32)
           .limit(32)
+
+        totalProducts = getTotalProducts(Product, page, 32, {"category": req.query.cat})
+        
       } else {
         products = await Product
           .find()
           .skip(page * 32)
           .limit(32)
+
+        totalProducts = getTotalProducts(Product, page, 32, null)
+        
       }
 
-      totalProducts = products.lengths
       Sort(products, sort)
       
       res.status(200).json({products, totalProducts});
@@ -273,7 +278,7 @@ router.get("/", async (req, res) => {
     if(req.query.q) {
       products = await Product.find({title: new RegExp(req.query.q, "i")})
 
-      totalProducts = products.length
+      totalProducts = getTotalProducts(Product, page, 32, {title: new RegExp(req.query.q, "i")})
 
       res.status(200).json({products, totalProducts})
       return
@@ -286,6 +291,8 @@ router.get("/", async (req, res) => {
         .skip(page * productPerPage)
         .limit(productPerPage)
 
+      totalProducts = getTotalProducts(Product, page, 32, {"category": req.query.cat})
+
     } else {
       products = await Product
         .find()
@@ -293,7 +300,7 @@ router.get("/", async (req, res) => {
         .limit(productPerPage)
       }
 
-      totalProducts = products.length
+      totalProducts = getTotalProducts(Product, page, 32, null)
       
       Sort(products, sort)
 
@@ -479,5 +486,25 @@ router.delete("/:id", async (req, res) => {
     res.status(500).json(error);
   }
 });
+
+
+
+async function getTotalProducts(Model, page, limit, query) {
+  let total = 0
+
+  if(query) {
+    total = await Model.find(query)
+      .skip(page * limit)
+      .limit(limit)
+      .count();
+  } else {
+    total = await Model.find()
+      .skip(page * limit)
+      .limit(limit)
+      .count();
+  }
+
+  return total
+}
 
 module.exports = router;
