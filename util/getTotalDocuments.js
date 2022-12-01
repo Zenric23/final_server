@@ -1,5 +1,5 @@
 
-exports.getTotalDocuments = async (Model, page, limit, sort, query) => {
+exports.getTotalDocuments = async (Model, sort, query) => {
     let total = 0
   
     if(query) {
@@ -7,13 +7,9 @@ exports.getTotalDocuments = async (Model, page, limit, sort, query) => {
         if(sort) {
             total = await Model.find(query)
               .sort(sort)
-              .skip(page * limit)
-              .limit(limit)
               .count();
         } else {
             total = await Model.find(query)
-              .skip(page * limit)
-              .limit(limit)
               .count();
         }
 
@@ -22,13 +18,10 @@ exports.getTotalDocuments = async (Model, page, limit, sort, query) => {
         if(sort) {
             total = await Model.find()
               .sort(sort)
-              .skip(page * limit)
-              .limit(limit)
               .count();
         } else {
-            total = await Model.find()
-                .skip(page * limit)
-                .limit(limit)
+            total = await Model
+                .find()
                 .count();
         }
 

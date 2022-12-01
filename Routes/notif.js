@@ -24,7 +24,6 @@ router.get("/", async (req, res) => {
       totalNotifs = await getTotalDocuments(
         Notification,
         page,
-        notifPerPage,
         { createdAt: -1 },
         null
       );
@@ -47,7 +46,6 @@ router.get("/", async (req, res) => {
       totalNotifs = await getTotalDocuments(
         Notification,
         page,
-        notifPerPage,
         { createdAt: -1 },
         { isRead: true }
       );
@@ -61,7 +59,6 @@ router.get("/", async (req, res) => {
       totalNotifs = await getTotalDocuments(
         Notification,
         page,
-        notifPerPage,
         { createdAt: -1 },
         { isRead: false }
       );
@@ -75,7 +72,6 @@ router.get("/", async (req, res) => {
       totalNotifs = await getTotalDocuments(
         Notification,
         page,
-        notifPerPage,
         { createdAt: -1 },
         null
       );

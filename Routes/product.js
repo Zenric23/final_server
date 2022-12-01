@@ -246,7 +246,7 @@ router.get("/", async (req, res) => {
        if(req.query.q) {
       products = await Product.find({title: new RegExp(req.query.q, "i")})
 
-      totalProducts = await getTotalDocuments(Product, page, 32, null, {title: new RegExp(req.query.q, "i")})
+      totalProducts = await getTotalDocuments(Product, null, {title: new RegExp(req.query.q, "i")})
 
       res.status(200).json({products, totalProducts})
       return
@@ -258,7 +258,7 @@ router.get("/", async (req, res) => {
           .skip(page * 32)
           .limit(32)
 
-        totalProducts = await getTotalDocuments(Product, page, 32, null, {"category": req.query.cat})
+        totalProducts = await getTotalDocuments(Product, null, {"category": req.query.cat})
         
       } else {
         products = await Product
@@ -266,7 +266,7 @@ router.get("/", async (req, res) => {
           .skip(page * 32)
           .limit(32)
 
-        totalProducts = await getTotalDocuments(Product, page, 32, null, null)
+        totalProducts = await getTotalDocuments(Product, null, null)
         
       }
 
@@ -282,7 +282,7 @@ router.get("/", async (req, res) => {
         .skip(page * productPerPage)
         .limit(productPerPage)
 
-      totalProducts = await getTotalDocuments(Product, page, 10, null, {title: new RegExp(req.query.q, "i")})
+      totalProducts = await getTotalDocuments(Product, null, {title: new RegExp(req.query.q, "i")})
 
       res.status(200).json({products, totalProducts})
       return
@@ -295,7 +295,7 @@ router.get("/", async (req, res) => {
         .skip(page * productPerPage)
         .limit(productPerPage)
 
-      totalProducts = await getTotalDocuments(Product, page, 10, null, {"category": req.query.cat})
+      totalProducts = await getTotalDocuments(Product, null, {"category": req.query.cat})
 
     } else {
       products = await Product
@@ -304,7 +304,7 @@ router.get("/", async (req, res) => {
         .limit(productPerPage)
       }
 
-      totalProducts = await getTotalDocuments(Product, page, 10, null, null)
+      totalProducts = await getTotalDocuments(Product, null, null)
       
       Sort(products, sort)
 
