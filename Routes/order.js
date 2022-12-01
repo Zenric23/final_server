@@ -79,7 +79,7 @@ router.get('/', async (req, res)=> {
 
 router.get('/latest',  async (req, res)=> {
     try {
-        const orders = await Order.find().sort({createdAt: -1}).limit(8)
+        const orders = await Order.find({payment_method: { $ne: '' }}).sort({createdAt: -1}).limit(8)
         res.status(200).json(orders)
     } catch (error) {
         console.log(error)
