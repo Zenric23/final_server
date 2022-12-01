@@ -194,7 +194,7 @@ router.post("/register", async (req, res) => {
     if(adminUser) {
         res.status(403).json('Username is already taken!')
         return
-    } 
+    }  
 
     const admin = new Admin({
       username,
