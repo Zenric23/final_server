@@ -10,8 +10,11 @@ router.get("/", async (req, res) => {
   try {
       
       if (req.query.latest) {
-    notifPerPage = 6
-      skip(notifPerPage * page)
+        notifPerPage = 6
+
+      const reviews = await Notification
+        .find()
+        .skip(notifPerPage * page)
         .limit(notifPerPage)
         .sort({ createdAt: -1 });
 
