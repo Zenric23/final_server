@@ -8,9 +8,9 @@ router.get("/", async (req, res) => {
   let notifPerPage = 10;
 
   try {
+      
+      if (req.query.latest) {
     notifPerPage = 6
-    
-    if (req.query.latest) {
       skip(notifPerPage * page)
         .limit(notifPerPage)
         .sort({ createdAt: -1 });
