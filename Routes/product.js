@@ -2,6 +2,7 @@ const router = require("express").Router();
 const Order = require("../Model/Order");
 const Product = require("../Model/Product");
 const cloudinary = require('../util/cloudinaryUtil');
+const { getTotalDocuments } = require("../util/getTotalDocuments");
 
 
 router.get("/best-seller", async (req, res) => {
@@ -245,7 +246,7 @@ router.get("/", async (req, res) => {
        if(req.query.q) {
       products = await Product.find({title: new RegExp(req.query.q, "i")})
 
-      totalProducts = getTotalProducts(Product, page, 32, {title: new RegExp(req.query.q, "i")})
+      totalProducts = await getTotalDocuments(Product, page, 32, null, {title: new RegExp(req.query.q, "i")})
 
       res.status(200).json({products, totalProducts})
       return
@@ -257,7 +258,7 @@ router.get("/", async (req, res) => {
           .skip(page * 32)
           .limit(32)
 
-        totalProducts = getTotalProducts(Product, page, 32, {"category": req.query.cat})
+        totalProducts = await getTotalDocuments(Product, page, 32, null, {"category": req.query.cat})
         
       } else {
         products = await Product
@@ -265,7 +266,7 @@ router.get("/", async (req, res) => {
           .skip(page * 32)
           .limit(32)
 
-        totalProducts = getTotalProducts(Product, page, 32, null)
+        totalProducts = await getTotalDocuments(Product, page, 32, null, null)
         
       }
 
@@ -276,9 +277,12 @@ router.get("/", async (req, res) => {
     }
 
     if(req.query.q) {
-      products = await Product.find({title: new RegExp(req.query.q, "i")})
+      products = await Product
+        .find({title: new RegExp(req.query.q, "i")})
+        .skip(page * productPerPage)
+        .limit(productPerPage)
 
-      totalProducts = getTotalProducts(Product, page, 32, {title: new RegExp(req.query.q, "i")})
+      totalProducts = await getTotalDocuments(Product, page, 10, null, {title: new RegExp(req.query.q, "i")})
 
       res.status(200).json({products, totalProducts})
       return
@@ -291,7 +295,7 @@ router.get("/", async (req, res) => {
         .skip(page * productPerPage)
         .limit(productPerPage)
 
-      totalProducts = getTotalProducts(Product, page, 32, {"category": req.query.cat})
+      totalProducts = await getTotalDocuments(Product, page, 10, null, {"category": req.query.cat})
 
     } else {
       products = await Product
@@ -300,7 +304,7 @@ router.get("/", async (req, res) => {
         .limit(productPerPage)
       }
 
-      totalProducts = getTotalProducts(Product, page, 32, null)
+      totalProducts = await getTotalDocuments(Product, page, 10, null, null)
       
       Sort(products, sort)
 
@@ -489,22 +493,22 @@ router.delete("/:id", async (req, res) => {
 
 
 
-async function getTotalProducts(Model, page, limit, query) {
-  let total = 0
+// async function getTotalDocuments(Model, page, limit, query) {
+//   let total = 0
 
-  if(query) {
-    total = await Model.find(query)
-      .skip(page * limit)
-      .limit(limit)
-      .count();
-  } else {
-    total = await Model.find()
-      .skip(page * limit)
-      .limit(limit)
-      .count();
-  }
+//   if(query) {
+//     total = await Model.find(query)
+//       .skip(page * limit)
+//       .limit(limit)
+//       .count();
+//   } else {
+//     total = await Model.find()
+//       .skip(page * limit)
+//       .limit(limit)
+//       .count();
+//   }
 
-  return total
-}
+//   return total
+// }
 
 module.exports = router;

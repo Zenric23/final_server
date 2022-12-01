@@ -65,7 +65,8 @@ router.get('/', async (req, res)=> {
 
     try {
      
-        const orders = await Order.find({payment_method: { $ne: '' }}).sort({createdAt: -1})
+        const orders = await Order.find({payment_method: { $ne: '' }})
+                .sort({createdAt: -1})
                 .skip(page * orderPerPage)
                 .limit(orderPerPage)
 
