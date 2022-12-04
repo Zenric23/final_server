@@ -16,7 +16,7 @@ var Product = new Schema({
   },
   sizes: [{
     price: {
-      type: Double,
+      type: Number,
       required: true
     },
     size: {
