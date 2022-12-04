@@ -159,7 +159,7 @@ router.post('/', async (req, res)=> {
         ...rest
     } = req.body
 
-    const total = totalPayment(req.body.products, req.body.shipping_fee)
+    const total = totalPayment(req.body.products, shipping_fee)
 
     const items = req.body.products.map(prod=> {
         return {
@@ -173,6 +173,7 @@ router.post('/', async (req, res)=> {
     try {
         const newOrder = new Order({
             ...rest,
+            shipping_fee,
             products: items,
             totalPayment: total
         })

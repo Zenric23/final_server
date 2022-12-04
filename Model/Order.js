@@ -62,6 +62,10 @@ var Order = new Schema({
     type: String,
     default: ''
   },
+  shipping_fee: {
+    type: Number,
+    required: true
+  },
   products: [{
    product_id: {
       type: Schema.Types.ObjectId,
@@ -81,7 +85,7 @@ var Order = new Schema({
       required: true
    }
 }] 
-  
+
 }, { timestamps: true });
 
 module.exports = mongoose.model('Order', Order)
