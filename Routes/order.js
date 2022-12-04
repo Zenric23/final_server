@@ -70,7 +70,9 @@ router.get('/', async (req, res)=> {
                 .skip(page * orderPerPage)
                 .limit(orderPerPage)
 
-        const total = await Order.countDocuments()
+        const total = await Order
+                .find({payment_method: { $ne: '' }})
+                .count()
         
         res.status(200).json({orders, total})
     } catch (error) {
