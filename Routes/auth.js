@@ -5,6 +5,8 @@ const jwt = require("jsonwebtoken");
 const Admin = require("../Model/Admin");
 const Cart = require("../Model/Cart");
 const { OAuth2Client } = require("google-auth-library");
+var uuid = require('uuid');
+
 
 const googleClient = new OAuth2Client({
   clientId: `${process.env.GOOGLE_CLIENT_ID}`,
@@ -99,6 +101,7 @@ const googleAuth = async (requestData, res) => {
           email: payload?.email,
           name: `${payload?.given_name} ${payload?.family_name}`, 
           avatar: payload?.picture,
+          pass: uuid.v1()
         });
         await user.save();
   
