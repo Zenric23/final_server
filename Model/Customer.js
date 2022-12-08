@@ -16,7 +16,7 @@ const Customer = new Schema({
   },
   pass: {
     type: String,
-    unique: true,
+    // unique: true,
     // required: true
   },
   // address: [{
