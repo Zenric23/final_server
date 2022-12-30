@@ -1,6 +1,6 @@
 const io = require("socket.io")(process.env.SOCKET_PORT || 8000, {
     cors: {
-        origin: ['https://kingcanis.com', 'https://dashboard.kingcanis.com']
+        origin: ['https://kingcanis.netlify.app', 'https://dashboard.kingcanis.com']
     }
   });
   
