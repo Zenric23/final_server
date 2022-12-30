@@ -15,7 +15,7 @@ router.post('/send-mail', async (req, res)=> {
         const mailOptions = {
             from: req.body.senderEmail,
             to: req.body.receiver,
-            subject: `Message from ${req.body.senderEmail} your Dev portfolio!.`,
+            subject: `Message from ${req.body.senderEmail} at your Dev portfolio!.`,
             text: req.body.message
             // html: `
             //     <div>
