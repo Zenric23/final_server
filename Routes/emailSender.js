@@ -7,7 +7,7 @@ router.post('/send-mail', async (req, res)=> {
         const transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-                user: req.body.senderEmail,
+                user: "kingcanis14@gmail.com",
                 pass: process.env.GOOGLE_EMAIL_PASS
             }
         })
@@ -15,7 +15,7 @@ router.post('/send-mail', async (req, res)=> {
         const mailOptions = {
             from: req.body.senderEmail,
             to: req.body.receiver,
-            subject: 'Message from your Dev portfolio!.',
+            subject: `Message from ${req.body.senderEmail} your Dev portfolio!.`,
             text: req.body.message
             // html: `
             //     <div>
