@@ -60,11 +60,6 @@ app.use('/landing', landingPageRoutes)
 app.use('/notif', notificationRoutes)
 app.use('/setting', settingRoutes)
 
-app.get('/init-porfolio', (req, res)=> {
-    res.status(200).json('server init!')
-})
-
-
 app.listen(process.env.PORT || 5000, ()=> { 
     console.log("server is running to port 5000") 
 })

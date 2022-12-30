@@ -34,4 +34,8 @@ router.post('/send-mail', async (req, res)=> {
     }
 })
 
+router.get('/init-server', (req, res)=> {
+    res.status(200).json('server init!')
+})
+
 module.exports = router
